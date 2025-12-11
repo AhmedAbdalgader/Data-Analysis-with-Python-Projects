@@ -21,7 +21,7 @@ def calculate_demographic_data(print_data=True):
     # print(df2.head())
     df2 = df2[df2['sex']== 'Male']
     # print(df2['age'].mean())
-    average_age_men = df2['age'].mean()
+    average_age_men = round(df2['age'].mean(), 1) # !=39.4
     # print('average_age_men: ', average_age_men)
     # What is the percentage of people who have a Bachelor's degree?
     # df3 = df1.loc[:, ['education']]
@@ -33,7 +33,7 @@ def calculate_demographic_data(print_data=True):
     # All = 32561
     df3 = df[df['education'] == 'Bachelors']['education']
     # print(df3.count())
-    percentage_bachelors = df3.count()/df31*100
+    percentage_bachelors = round(df3.count()/df31*100, 1) # 16.44605509658794 !=16.4
     # print(df3.groupby('education').count()/df.count()*100)
     # print(percentage_bachelors)
 
@@ -45,9 +45,9 @@ def calculate_demographic_data(print_data=True):
     # print(df41.head())
     df42 = df41[ df41['salary'] == '>50K']
     # print(df42.shape)
-    percent =  df42.count()/df4.count()*100
-    higher_education_rich = percent.iloc[0]
-    # print(percent)
+    percent =  df42.count()/df41.count()*100
+    higher_education_rich = round(percent.iloc[0], 1) # 10.706059396210192 !=46.5
+    # print(higher_education_rich)
 
     # # What percentage of people without advanced education make more than 50K?
 
@@ -58,9 +58,9 @@ def calculate_demographic_data(print_data=True):
     # print(df51.shape)
     df52 = df51[ df51['salary'] == '>50K']
     # print(df52.shape)
-    percent2 =  df52.count()/df4.count()*100
-    lower_education_rich = percent2.iloc[0]
-    # print(percent2)
+    percent2 =  df52.count()/df51.count()*100
+    lower_education_rich = round(percent2.iloc[0], 1) # 13.374896348392248 !=17.4
+    # print(lower_education_rich)
     # # percentage with salary >50K
     # # df6 = 
     # # print(df6)
@@ -86,8 +86,8 @@ def calculate_demographic_data(print_data=True):
     df72 = df71[df71['salary'] == '>50K']
     # print(df72.head())
     # print(df72.shape)
-    percent3 = df72.count()/df7.count()*100
-    rich_percentage = percent3.iloc[0]
+    percent3 = df72.count()/df71.count()*100
+    rich_percentage = percent3.iloc[0] # 0.006142317496391388 !=10
     # print(percent3)
     # num_min_workers = df[((df['hours-per-week'] == min_work_hours)) & (df['salary'] == '>50K')]
     # print(num_min_workers)
@@ -96,17 +96,17 @@ def calculate_demographic_data(print_data=True):
 
     # # What country has the highest percentage of people that earn >50K?
     df8 = df.loc[:, ['native-country', 'salary']]
-    # print(df8.head())
-    # print(df8['native-country'].value_counts())
-    df81 = df8[df8['salary'] == '>50K']
-    df82 = df81['native-country'].value_counts()
-    # print(df82.max())
-    # print(df82.sum())
-    # print(df81['native-country'].value_counts().head(1))
-    highest_earning_country = df81['native-country'].value_counts().idxmax()
+
+# Calculate percentage for each country
+    country_stats = df8.groupby('native-country')['salary'].apply(
+        lambda x: (x == '>50K').sum() / len(x) * 100
+    )
+
+    highest_earning_country = country_stats.idxmax()
+    highest_earning_country_percentage = round(country_stats.max(), 1)
     # print(highest_earning_country)
-    percent4 = df82.max()/df82.sum()*100
-    highest_earning_country_percentage = percent4
+    # percent4 = df82.max()/df81['native-country'].value_counts().sum()*100
+    # highest_earning_country_percentage = percent4 # 91.45517153424308 !=41.9
     # print(percent4)
     # df9 = df[df['salary'] == '>50K'].groupby('native-country').count().sort_values(by='age', ascending=0).head(1)
     # highest_earning_country = df9
